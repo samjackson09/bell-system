@@ -1,41 +1,33 @@
 const express = require('express');
 const WebSocket = require('ws');
 const cors = require('cors');
-const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve the React build (we'll place it here after building)
-app.use(express.static(path.join(__dirname, 'client/build')));
-
-// Fallback for SPA
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
-
+// ==================== PORT ====================
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => console.log(`🚀 Cloud server on port ${PORT}`));
 
+// ==================== WebSocket Server ====================
 const wss = new WebSocket.Server({ server });
 
 // Store connected devices and browsers
-const devices = new Map();   // deviceId -> { ws, lastStatus }
-const browsers = new Set();
+const devices = new Map();      // deviceId -> { ws, lastStatus }
+const browsers = new Set();     // browser WebSocket connections
 
-// -------------------- AUTHENTICATION CONFIG --------------------
-// Change these to match your ESP32's web credentials
+// ==================== AUTHENTICATION ====================
 const VALID_WEB_USER = 'sj ngarama';
 const VALID_WEB_PASS = 'ngarama123';
 
-// For production, store allowed device credentials in a JSON file or env variables.
-// For now, we accept any device (testing). To enable strict validation, uncomment the check below.
-const ALLOWED_DEVICES = {
-  'esp32_001': 'secure123',
-  // add more devices if needed
-};
+// For production, define allowed devices (uncomment and populate)
+// const ALLOWED_DEVICES = {
+//   'esp32_001': 'mySecure123',
+//   // add more devices as needed
+// };
 
+// ==================== WebSocket Event Handler ====================
 wss.on('connection', (ws) => {
   let deviceId = null;
   let isBrowser = false;
@@ -43,17 +35,14 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     try {
       const data = JSON.parse(message);
+
+      // ---------- AUTHENTICATION ----------
       if (data.type === 'auth') {
-        // ---------- Device authentication ----------
+        // Device authentication
         if (data.deviceId && data.password) {
-          // Strict validation (recommended):
+          // For testing: accept any device.
+          // In production, use ALLOWED_DEVICES check:
           // if (ALLOWED_DEVICES[data.deviceId] && ALLOWED_DEVICES[data.deviceId] === data.password) {
-          //   deviceId = data.deviceId;
-          // } else {
-          //   ws.send(JSON.stringify({ type: 'auth_fail' }));
-          //   return;
-          // }
-          // For testing, accept any:
           deviceId = data.deviceId;
           devices.set(deviceId, { ws, lastStatus: {} });
           ws.send(JSON.stringify({ type: 'auth_ok' }));
@@ -61,7 +50,7 @@ wss.on('connection', (ws) => {
           return;
         }
 
-        // ---------- Browser authentication ----------
+        // Browser authentication
         if (data.username && data.password) {
           if (data.username === VALID_WEB_USER && data.password === VALID_WEB_PASS) {
             isBrowser = true;
@@ -85,7 +74,7 @@ wss.on('connection', (ws) => {
         }
       }
 
-      // ---------- Device status update ----------
+      // ---------- DEVICE STATUS UPDATE ----------
       if (deviceId && data.type === 'status') {
         const dev = devices.get(deviceId);
         if (dev) {
@@ -103,7 +92,7 @@ wss.on('connection', (ws) => {
         }
       }
 
-      // ---------- Schedule payload from device (response to 'get_schedule') ----------
+      // ---------- SCHEDULE PAYLOAD FROM DEVICE ----------
       if (deviceId && data.type === 'schedule') {
         const dev = devices.get(deviceId);
         if (dev) {
@@ -119,7 +108,7 @@ wss.on('connection', (ws) => {
         }
       }
 
-      // ---------- Command from browser ----------
+      // ---------- COMMAND FROM BROWSER ----------
       if (isBrowser && data.type === 'command' && data.deviceId) {
         const dev = devices.get(data.deviceId);
         if (dev && dev.ws.readyState === WebSocket.OPEN) {
@@ -133,10 +122,11 @@ wss.on('connection', (ws) => {
       }
 
     } catch (e) {
-      console.error('WS error:', e);
+      console.error('WebSocket error:', e);
     }
   });
 
+  // ---------- DISCONNECT ----------
   ws.on('close', () => {
     if (deviceId) {
       devices.delete(deviceId);
@@ -147,3 +137,10 @@ wss.on('connection', (ws) => {
     }
   });
 });
+
+// ==================== Health Check Endpoint (optional) ====================
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', devices: devices.size, browsers: browsers.size });
+});
+
+console.log(`✅ WebSocket server ready on port ${PORT}`);
