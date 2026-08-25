@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 512 512"
+     width="512"
+     height="512">
+
+  <defs>
+
+    <!-- PREMIUM NAVY / BLUE -->
+    <linearGradient id="blueGrad"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%">
+      <stop offset="0%" stop-color="#06164F"/>
+      <stop offset="45%" stop-color="#0B4FD8"/>
+      <stop offset="75%" stop-color="#1689F5"/>
+      <stop offset="100%" stop-color="#052A91"/>
+    </linearGradient>
+
+    <!-- PREMIUM GOLD -->
+    <linearGradient id="goldGrad"
+                    x1="0%"
+                    y1="100%"
+                    x2="100%"
+                    y2="0%">
+      <stop offset="0%" stop-color="#09f04e"/>
+      <stop offset="35%" stop-color="#09f04e"/>
+      <stop offset="65%" stop-color="#09f04e"/>
+      <stop offset="100%" stop-color="#09f04e"/>
+    </linearGradient>
+
+    <!-- WHITE -->
+    <linearGradient id="whiteGrad"
+                    x1="0%"
+                    y1="0%"
+                    x2="0%"
+                    y2="100%">
+      <stop offset="0%" stop-color="#ffffffaf"/>
+      <stop offset="100%" stop-color="#F1F5FF"/>
+    </linearGradient>
+
+    <!-- SOFT SHADOW -->
+    <filter id="shadow"
+            x="-30%"
+            y="-30%"
+            width="160%"
+            height="160%">
+
+      <feDropShadow
+        dx="0"
+        dy="7"
+        stdDeviation="6"
+        flood-color="#00133D"
+        flood-opacity="0.28"/>
+    </filter>
+
+  </defs>
+
+
+  <!-- =====================================
+       PREMIUM BACKGROUND
+       ===================================== -->
+
+  <circle
+    cx="256"
+    cy="256"
+    r="250"
+    fill="url(#blueGrad)"/>
+
+
+  <!-- INNER WHITE AREA -->
+
+  <circle
+    cx="256"
+    cy="256"
+    r="232"
+    fill="url(#whiteGrad)"/>
+
+
+  <!-- =====================================
+       OUTER GOLD RING
+       ===================================== -->
+
+  <circle
+    cx="256"
+    cy="256"
+    r="235"
+    fill="none"
+    stroke="url(#goldGrad)"
+    stroke-width="9"/>
+
+
+  <!-- =====================================
+       LARGE SJ MONOGRAM
+       ===================================== -->
+
+  <!-- S -->
+
+  <text
+    x="75"
+    y="350"
+    font-family="Arial Black, Impact, sans-serif"
+    font-size="290"
+    font-weight="900"
+    font-style="italic"
+    fill="url(#blueGrad)"
+    filter="url(#shadow)">
+    S
+  </text>
+
+
+  <!-- J -->
+
+  <text
+    x="255"
+    y="360"
+    font-family="Arial Black, Impact, sans-serif"
+    font-size="290"
+    font-weight="900"
+    font-style="italic"
+    fill="url(#blueGrad)"
+    filter="url(#shadow)">
+    J
+  </text>
+
+
+  <!-- =====================================
+       GOLD GROWTH SWOOSH
+       ===================================== -->
+
+  <path
+    d="
+      M 85 350
+      C 145 405,
+        275 400,
+        370 290
+      C 400 255,
+        420 215,
+        430 170
+    "
+    fill="none"
+    stroke="url(#goldGrad)"
+    stroke-width="22"
+    stroke-linecap="round"
+    filter="url(#shadow)"/>
+
+
+  <!-- =====================================
+       GROWTH BARS
+       ===================================== -->
+
+  <rect
+    x="350"
+    y="260"
+    width="17"
+    height="42"
+    rx="3"
+    fill="url(#goldGrad)"/>
+
+  <rect
+    x="375"
+    y="225"
+    width="17"
+    height="77"
+    rx="3"
+    fill="url(#goldGrad)"/>
+
+  <rect
+    x="400"
+    y="185"
+    width="17"
+    height="117"
+    rx="3"
+    fill="url(#blueGrad)"/>
+
+
+  <!-- =====================================
+       UPWARD GOLD ARROW
+       ===================================== -->
+
+  <path
+    d="
+      M 410 205
+      L 450 140
+      L 463 168
+      L 482 125
+      L 477 215
+      L 448 195
+      L 432 222
+      Z
+    "
+    fill="url(#goldGrad)"
+    filter="url(#shadow)"/>
+
+
+  <!-- =====================================
+       FINANCE LABEL BACKGROUND
+       ===================================== -->
+
+  <rect
+    x="105"
+    y="400"
+    width="302"
+    height="70  "
+    rx="33"
+    fill="#153fbe"
+    filter="url(#shadow)"/>
+
+
+  <!-- =====================================
+       FINANCE TEXT
+       ===================================== -->
+
+  <text
+    x="260"
+    y="450"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="70"
+    font-weight="800"
+    font-style="italic"
+    letter-spacing="1.5"
+    fill="yellow">
+    Bell
+  </text>
+
+
+  <!-- =====================================
+       GOLD ACCENT UNDER FINANCE
+       ===================================== -->
+
+  <path
+    d="
+      M 160 478
+      C 215 465,
+        300 465,
+        352 478
+    "
+    fill="none"
+    stroke="url(#goldGrad)"
+    stroke-width="7"
+    stroke-linecap="round"/>
+
+</svg>
