@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // ==================== CONFIGURATION ====================
 // Change this to your actual cloud WebSocket URL (e.g., wss://bell.yourdomain.com)
-const CLOUD_WS = 'ws://localhost:3000';
+const CLOUD_WS = import.meta.env.VITE_CLOUD_WS || 'ws://localhost:3000';
 
 // ==================== MAIN APP ====================
 function App() {
